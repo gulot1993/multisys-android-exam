@@ -76,21 +76,21 @@ fun PostsScreenContent(
         ){
             LoadingIndicator(isLoading = isLoading)
             SubredditPostLists(posts = posts, isDoneLoading = !isLoading, onItemClick = onItemClick)
+            if (error.isNotEmpty()) {
+                val errorMessage = if (error == "HTTP 404 ") {
+                    stringResource(R.string.no_results_found)
+                } else {
+                    error
+                }
+                Text(
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
+                    text = errorMessage
+                )
+            }
         }
 
-        if (error.isNotEmpty()) {
-            val errorMessage = if (error == "HTTP 404 ") {
-                stringResource(R.string.no_results_found)
-            } else {
-                error
-            }
-            Text(
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold,
-                fontSize = 12.sp,
-                text = errorMessage
-            )
-        }
     }
 }
 
