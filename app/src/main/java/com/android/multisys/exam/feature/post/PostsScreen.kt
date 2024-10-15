@@ -1,6 +1,8 @@
 package com.android.multisys.exam.feature.post
 
 import android.content.res.Configuration
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -23,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.android.multisys.exam.R
 import com.android.multisys.exam.data.domain.SubredditPost
@@ -35,20 +39,23 @@ import timber.log.Timber
 @Composable
 fun PostsScreen(
     subredditTitle: String,
-    postViewModel: PostViewModel = hiltViewModel()
+    postViewModel: PostViewModel = hiltViewModel(),
+    onItemClick: (link: String) -> Unit
 ) {
     val uiState by postViewModel.uiState.collectAsState()
     LaunchedEffect(key1 = true) {
         postViewModel.getSubredditPosts(subreddit = subredditTitle)
     }
     PostsScreenContent(
-        uiState = uiState
+        uiState = uiState,
+        onItemClick = onItemClick
     )
 }
 
 @Composable
 fun PostsScreenContent(
-    uiState: PostsUIState
+    uiState: PostsUIState,
+    onItemClick: (link: String) -> Unit
 ) {
     val posts = uiState.posts
     val isLoading = uiState.isLoading
@@ -68,7 +75,7 @@ fun PostsScreenContent(
                 )
         ){
             LoadingIndicator(isLoading = isLoading)
-            SubredditPostLists(posts = posts, isDoneLoading = !isLoading)
+            SubredditPostLists(posts = posts, isDoneLoading = !isLoading, onItemClick = onItemClick)
         }
 
         if (error.isNotEmpty()) {
@@ -85,7 +92,8 @@ fun PostsScreenContent(
 @Composable
 fun SubredditPostLists(
     posts: List<SubredditPost>,
-    isDoneLoading: Boolean
+    isDoneLoading: Boolean,
+    onItemClick: (link: String) -> Unit
 ) {
     if (isDoneLoading && posts.isNotEmpty()) {
 
@@ -105,7 +113,7 @@ fun SubredditPostLists(
             items(items = posts, key = { it.id }) {
                 PostListItem(
                     post = it,
-                    onItemClick = {}
+                    onItemClick = onItemClick
                 )
             }
         }
@@ -123,7 +131,8 @@ fun SubredditPostLists(
 fun PostsScreenPreview() {
     MultisysandroidexamTheme {
         PostsScreen(
-            subredditTitle = ""
+            subredditTitle = "",
+            onItemClick = {}
         )
     }
 }

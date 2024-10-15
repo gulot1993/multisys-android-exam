@@ -20,14 +20,16 @@ import com.android.multisys.exam.ui.theme.MultisysandroidexamTheme
 
 @Composable
 fun PostListItem(
-    onItemClick: () -> Unit,
+    onItemClick: (permalink: String) -> Unit,
     post: SubredditPost
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
         onClick = {
-            onItemClick()
+            if (!post.permalink.isNullOrEmpty()) {
+                onItemClick(post.permalink)
+            }
         },
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp),
         colors = CardDefaults.cardColors(

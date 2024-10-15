@@ -19,6 +19,7 @@ import com.android.multisys.exam.BuildConfig
 import com.android.multisys.exam.feature.auth.AuthScreen
 import com.android.multisys.exam.feature.home.HomeScreen
 import com.android.multisys.exam.feature.post.PostsScreen
+import com.android.multisys.exam.feature.webview.WebViewScreen
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
@@ -43,6 +44,10 @@ fun MultisysAndroidExamApp() {
     val context = LocalContext.current
 
     var authorizationCode = remember {
+        ""
+    }
+
+    var permalink = remember {
         ""
     }
 
@@ -82,7 +87,11 @@ fun MultisysAndroidExamApp() {
             route = NavigationRoute.PostsScreen.route,
         ) {
             PostsScreen(
-                subredditTitle = subreddit
+                subredditTitle = subreddit,
+                onItemClick = {
+                    permalink = it
+                    navController.navigate(NavigationRoute.WebViewScreen.route)
+                }
             )
         }
 
@@ -92,6 +101,13 @@ fun MultisysAndroidExamApp() {
                 onClick = { resLauncher.launch(intent) }
             )
         }
+
+        composable(route = NavigationRoute.WebViewScreen.route) {
+            WebViewScreen(
+                link = permalink
+            )
+        }
+
     }
 }
 

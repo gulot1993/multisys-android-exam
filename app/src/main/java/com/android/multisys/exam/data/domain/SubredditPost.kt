@@ -7,5 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class SubredditPost(
     val id: String = "",
     val author: String = "",
-    val title: String = ""
+    val title: String = "",
+    val permalink: String? = "",
 ) : BaseModel
