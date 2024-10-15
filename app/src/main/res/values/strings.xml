@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">multisys-android-exam</string>
+    <string name="search">Search subreddit</string>
+    <string name="showing_results">Showing results: </string>
+    <string name="popular_reddits">Popular: </string>
+    <string name="auth_reddit">Authenticate Reddit</string>
+    <string name="no_results">No results</string>
+    <string name="post_title">%s</string>
+    <string name="post_author">Author: %s</string>
+    <string name="related_posts">Related posts:</string>
+    <string name="no_results_found">No post related to this subreddit</string>
+</resources>
