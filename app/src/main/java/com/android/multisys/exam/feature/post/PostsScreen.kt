@@ -84,7 +84,12 @@ fun PostsScreenContent(
             } else {
                 error
             }
-            Toast.makeText(LocalContext.current, errorMessage, Toast.LENGTH_LONG).show()
+            Text(
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold,
+                fontSize = 12.sp,
+                text = errorMessage
+            )
         }
     }
 }
